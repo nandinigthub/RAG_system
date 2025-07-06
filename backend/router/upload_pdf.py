@@ -1,6 +1,7 @@
 from fastapi import APIRouter, UploadFile, File
 from fastapi.responses import JSONResponse
-from backend.controllers.pdf_parser import parse_pdf
+from backend.controller.pdf_parser import parse_pdf
+from backend.controller.pdf_chunker import embed_chunks,prepare_chunks
 import base64
 
 router = APIRouter()
@@ -19,6 +20,10 @@ async def extract_pdf(file: UploadFile = File(...)):
             "index": img_info["index"],
             "base64": encoded
         })
+
+    # embed and store
+    chunks = prepare_chunks(content, tables)
+    embedded = embed_chunks(chunks)
 
     return JSONResponse({
         "message": "PDF processed",

@@ -57,3 +57,19 @@ if st.button("Ask") and img and question:
         data={"question": question}
     )
     st.success(f"Answer: {res.json()['answer']}")
+    
+    
+
+st.subheader("Ask a question")
+qstn = st.text_input("Your Question")
+
+if st.button("Ask Question") and qstn:
+    try:
+        res = requests.post(
+            "http://localhost:8000/ask/qa",
+            json={"query": qstn}
+        )
+        res.raise_for_status()
+        st.success(f"Answer: {res.text}")
+    except Exception as e:
+        st.error(f"Failed to get answer: {e}")

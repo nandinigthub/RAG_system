@@ -9,7 +9,7 @@ def extract_pdf_content(file_bytes: bytes):
     images = []
 
     for page_num, page in enumerate(doc):
-        full_text += f"\n--- Page {page_num + 1} ---\n"
+        full_text += f"\nPage {page_num + 1}\n"
         full_text += page.get_text("text")
 
         for img_index, img in enumerate(page.get_images(full=True)):
