@@ -3,7 +3,7 @@ import requests
 import base64
 import pandas as pd
 
-st.title("📄 RAG PDF QA System")
+st.title("RAG PDF System")
 
 with st.form("upload-form"):
     uploaded = st.file_uploader("Upload PDF", type="pdf")
@@ -12,7 +12,7 @@ with st.form("upload-form"):
 if uploaded and submit:
     # Call FastAPI backend
     response = requests.post(
-        "http://localhost:8000/api/upload",
+        "http://localhost:8000/extract/pdf",
         files={"file": uploaded}
     )
 
@@ -44,3 +44,16 @@ if uploaded and submit:
                 st.image(image_bytes, caption=f"Page {img['page']} - Image {img['index']}", use_container_width =True)
         else:
             st.info("No images found.")
+
+
+st.subheader("Ask a question about an image")
+img = st.file_uploader("Upload image (from PDF)", type=["jpg", "png"])
+question = st.text_input("Your question")
+
+if st.button("Ask") and img and question:
+    res = requests.post(
+        "http://localhost:8000/ask/vqa",
+        files={"image": img},
+        data={"question": question}
+    )
+    st.success(f"Answer: {res.json()['answer']}")
