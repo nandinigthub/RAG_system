@@ -1,13 +1,12 @@
 import io
 from PIL import Image
-import torch
-from transformers import Blip2Processor, Blip2ForConditionalGeneration
+from transformers import BlipProcessor,BlipForQuestionAnswering
 
-processor = Blip2Processor.from_pretrained("Salesforce/blip2-flan-t5-xl")
-model = Blip2ForConditionalGeneration.from_pretrained("Salesforce/blip2-flan-t5-xl", torch_dtype=torch.float16).to("cuda")
+processor = BlipProcessor.from_pretrained("Salesforce/blip-image-captioning-base")
+model = BlipForQuestionAnswering.from_pretrained("Salesforce/blip-vqa-base")
 
-def answer_image_question_blip2(img_bytes: bytes, question: str):
+def answer_image_question(img_bytes: bytes, question: str) -> str:
     image = Image.open(io.BytesIO(img_bytes)).convert("RGB")
-    inputs = processor(image, question, return_tensors="pt").to("cuda")
-    out = model.generate(**inputs, max_new_tokens=64)
+    inputs = processor(image, question, return_tensors="pt")
+    out = model.generate(**inputs)
     return processor.decode(out[0], skip_special_tokens=True)
