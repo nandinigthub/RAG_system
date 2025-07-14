@@ -1,4 +1,4 @@
-﻿# RAG_system
+# RAG_system
 # PDF QA System with VQA Support
 
 This project is a **Retrieval-Augmented Generation (RAG)** pipeline that allows users to upload PDFs and ask questions about the content, including **text**, **tables**, and **images** using both **language** and **vision-language models**. It includes a FastAPI backend, a Streamlit frontend, and integrates with **Qdrant** as a vector store.
@@ -17,7 +17,7 @@ This project is a **Retrieval-Augmented Generation (RAG)** pipeline that allows 
 ### 2. Vector Store Integration (Qdrant)
 
 * Chunks the extracted text and tables.
-* Embeds them using `sentence-transformers/all-MiniLM-L6-v2`.
+* Embeds them using `sentence-transformers/all-mpnet-base-v2`.
 * Stores vector embeddings in a local Qdrant instance.
 * Enables similarity search to retrieve context for questions.
 
@@ -25,7 +25,7 @@ This project is a **Retrieval-Augmented Generation (RAG)** pipeline that allows 
 
 * Supports asking questions about **images extracted from the PDF**.
 * Uses the **BLIP model** (`blip-vqa-base`) for VQA.
-* Endpoint: `POST /vqa`
+* Endpoint: `POST ask/vqa`
 
 ### 4. Frontend Integration (Streamlit)
 
@@ -35,7 +35,7 @@ This project is a **Retrieval-Augmented Generation (RAG)** pipeline that allows 
 
 ---
 
-## 🧩 Folder Structure
+## Folder Structure
 
 ```
 backend/
@@ -126,27 +126,5 @@ langchain-openai
 | Method | Endpoint       | Description                         |
 | ------ | -------------- | ----------------------------------- |
 | POST   | `/extract/pdf` | Upload and extract content from PDF |
-| POST   | `/vqa`         | Visual question answering on images |
-| POST   | `/qa`          | Ask questions on document content   |
-
----
-
-## 📌 Next Steps (Optional)
-
-* Add **chat history persistence**.
-* Use **Ollama** for fully local LLM & embedding.
-* Add **user authentication**.
-* Index images with captions for semantic search.
-
----
-
-## 🤝 Credits
-
-Built using:
-
-* [LangChain](https://www.langchain.com/)
-* [Qdrant](https://qdrant.tech/)
-* [Sentence-Transformers](https://www.sbert.net/)
-* [BLIP VQA Model](https://huggingface.co/Salesforce/blip-vqa-base)
-* [Streamlit](https://streamlit.io/)
-* [FastAPI](https://fastapi.tiangolo.com/)
+| POST   | `ask/vqa`         | Visual question answering on images |
+| POST   | `ask/qa`          | Ask questions on document content   |
